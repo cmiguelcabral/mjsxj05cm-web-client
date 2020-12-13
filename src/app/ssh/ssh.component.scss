@@ -1,0 +1,19 @@
+@import "../../styles.scss";
+
+mat-card {
+  margin: 10px;
+}
+
+.ssh-icon {
+  margin-left: 10px;
+}
+
+.ssh-icon.start {
+  background-color: green;
+}
+.ssh-icon.stop {
+  background-color: red;
+}
+.ssh-icon.restart {
+  background-color: mat-color($primary);
+}

@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar>
+            <mat-icon svgIcon="lan-connect" fxFill></mat-icon>
+        </div>
+        <mat-card-title>SSH / SFTP Configuration</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>
+                Control Service
+                <span fxFlex> </span>
+                <button mat-mini-fab class="ssh-icon start" [disabled]="enabled" (click)="start()">
+                    <mat-icon svgIcon="play"></mat-icon>
+                </button>
+                <button mat-mini-fab class="ssh-icon stop" [disabled]="!enabled"  (click)="stop()">
+                    <mat-icon svgIcon="stop"></mat-icon>
+                </button>
+                <button mat-mini-fab class="ssh-icon restart" [disabled]="!enabled"  (click)="restart()">
+                    <mat-icon svgIcon="restart"></mat-icon>
+                </button>
+            </mat-list-item>
+            <mat-list-item> Salt </mat-list-item>
+            <mat-list-item> Paprika </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+</mat-card>

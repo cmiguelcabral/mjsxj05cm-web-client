@@ -1,0 +1,7 @@
+{
+    "/api": {
+        "target": "http://home-big_brother.home",
+        "secure": false,
+        "changeOrigin": true
+    }
+}
