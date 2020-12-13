@@ -1,0 +1,77 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+
+env:
+  isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, '-rc') }}
+  isFinalRelease: ${{ contains(github.ref, 'tags') && !contains(github.ref, '-rc') }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: Setup Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Check out source code
+      uses: actions/checkout@v2
+    
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build:prod
+
+    - name: Package dist
+      run: cd dist && zip -r ../web-config-client.zip *
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: web-config-client
+        path: web-config-client.zip
+
+    - name: Release (pre-release)
+      if: env.isReleaseCandidate == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        artifacts: web-config-client.zip
+        
+    - name: Update latest-rc tag
+      if: env.isReleaseCandidate == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: latest-rc
+        allowUpdates: true
+        replacesArtifacts: true
+        prerelease: true
+        artifacts: web-config-client.zip
+
+    - name: Release (final)
+      if: env.isFinalRelease == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: web-config-client.zip
+        
+    - name: Update latest tag
+      if: env.isFinalRelease == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: latest
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: web-config-client.zip
