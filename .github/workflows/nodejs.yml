@@ -31,7 +31,7 @@ jobs:
     - name: Build
       run: npm run build:prod
 
-    - name: Package dist
+    - name: Package Distribution
       run: cd dist && zip -r ../web-config-client.zip *
 
     - name: Upload Build Artifacts
