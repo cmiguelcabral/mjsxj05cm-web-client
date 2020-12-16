@@ -8,8 +8,9 @@ on:
       - '*'
 
 env:
+  isNightly: ${{ !contains(github.ref, 'tags') && !contains(github.ref, '-rc') }}
   isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, '-rc') }}
-  isFinalRelease: ${{ contains(github.ref, 'tags') && !contains(github.ref, '-rc') }}
+  isFinalRelease: ${{ contains(github.ref, 'tags') && contains(github.ref, '-release') }}
 
 jobs:
   build:
@@ -39,6 +40,25 @@ jobs:
       with:
         name: web-config-client
         path: web-config-client.zip
+
+    - name: Release (dev)
+      if: env.isNightly == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        artifacts: web-config-client.zip
+        
+    - name: Update frv tag
+      if: env.isNightly == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: dev
+        allowUpdates: true
+        replacesArtifacts: true
+        prerelease: true
+        artifacts: web-config-client.zip
 
     - name: Release (pre-release)
       if: env.isReleaseCandidate == 'true'
