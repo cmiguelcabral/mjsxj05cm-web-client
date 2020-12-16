@@ -33,7 +33,7 @@ jobs:
       run: npm run build:prod
 
     - name: Package Distribution
-      run: zip -r dist/web-config-client.zip dist/*
+      run: cd dist && zip -r web-config-client.zip *
 
     # - name: Upload Build Artifacts
     #   uses: actions/upload-artifact@v1
