@@ -54,19 +54,20 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag : dev
         commit : dev
         allowUpdates: true
         replacesArtifacts: true
         prerelease: true
         artifacts: web-config-client.zip
 
-    - name: Release (pre-release)
-      if: env.isReleaseCandidate == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
-        artifacts: web-config-client.zip
+    # - name: Release (pre-release)
+    #   if: env.isReleaseCandidate == 'true'
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     prerelease: true
+    #     artifacts: web-config-client.zip
         
     - name: Update latest-rc tag
       if: env.isReleaseCandidate == 'true'
