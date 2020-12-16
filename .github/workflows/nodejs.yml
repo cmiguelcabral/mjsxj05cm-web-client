@@ -35,11 +35,11 @@ jobs:
     - name: Package Distribution
       run: cd dist && zip -r web-config-client.zip *
 
-    # - name: Upload Build Artifacts
-    #   uses: actions/upload-artifact@v1
-    #   with:
-    #     name: web-config-client
-    #     path: web-config-client.zip
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: web-config-client
+        path: dist/web-config-client.zip
 
     - name: Update dev tag
       if: env.isNightly == 'true'
@@ -47,7 +47,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag : dev
-        commit : dev
         allowUpdates: true
         replacesArtifacts: true
         prerelease: true
