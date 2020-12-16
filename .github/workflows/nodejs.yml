@@ -33,22 +33,14 @@ jobs:
       run: npm run build:prod
 
     - name: Package Distribution
-      run: cd dist && zip -r ../web-config-client.zip *
+      run: zip -r dist/web-config-client.zip dist/*
 
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: web-config-client
-        path: web-config-client.zip
-
-    # - name: Release (dev)
-    #   if: env.isNightly == 'true'
-    #   uses: ncipollo/release-action@v1
+    # - name: Upload Build Artifacts
+    #   uses: actions/upload-artifact@v1
     #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     prerelease: true
-    #     artifacts: web-config-client.zip
-        
+    #     name: web-config-client
+    #     path: web-config-client.zip
+
     - name: Update dev tag
       if: env.isNightly == 'true'
       uses: ncipollo/release-action@v1
@@ -60,15 +52,7 @@ jobs:
         replacesArtifacts: true
         prerelease: true
         artifacts: web-config-client.zip
-
-    # - name: Release (pre-release)
-    #   if: env.isReleaseCandidate == 'true'
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     prerelease: true
-    #     artifacts: web-config-client.zip
-        
+     
     - name: Update latest-rc tag
       if: env.isReleaseCandidate == 'true'
       uses: ncipollo/release-action@v1
@@ -80,12 +64,12 @@ jobs:
         prerelease: true
         artifacts: web-config-client.zip
 
-    - name: Release (final)
-      if: env.isFinalRelease == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: web-config-client.zip
+    # - name: Release (final)
+    #   if: env.isFinalRelease == 'true'
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     artifacts: web-config-client.zip
         
     - name: Update latest tag
       if: env.isFinalRelease == 'true'
