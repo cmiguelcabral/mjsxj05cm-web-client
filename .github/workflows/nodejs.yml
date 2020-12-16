@@ -8,7 +8,7 @@ on:
       - '*'
 
 env:
-  isNightly: ${{ !contains(github.ref, 'tags') && !contains(github.ref, '-rc') }}
+  isNightly: ${{ contains(github.ref, 'dev') }}
   isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, '-rc') }}
   isFinalRelease: ${{ contains(github.ref, 'tags') && contains(github.ref, '-release') }}
 
