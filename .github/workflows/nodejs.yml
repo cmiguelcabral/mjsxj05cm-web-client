@@ -51,7 +51,7 @@ jobs:
         allowUpdates: true
         replacesArtifacts: true
         prerelease: true
-        artifacts: web-config-client.zip
+        artifacts: dist/web-config-client.zip
      
     - name: Update latest-rc tag
       if: env.isReleaseCandidate == 'true'
@@ -62,7 +62,7 @@ jobs:
         allowUpdates: true
         replacesArtifacts: true
         prerelease: true
-        artifacts: web-config-client.zip
+        artifacts: dist/web-config-client.zip
 
     # - name: Release (final)
     #   if: env.isFinalRelease == 'true'
@@ -79,4 +79,4 @@ jobs:
         tag: latest
         allowUpdates: true
         replacesArtifacts: true
-        artifacts: web-config-client.zip
+        artifacts: dist/web-config-client.zip
