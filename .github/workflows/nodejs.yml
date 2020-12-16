@@ -41,20 +41,20 @@ jobs:
         name: web-config-client
         path: web-config-client.zip
 
-    - name: Release (dev)
-      if: env.isNightly == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        prerelease: true
-        artifacts: web-config-client.zip
+    # - name: Release (dev)
+    #   if: env.isNightly == 'true'
+    #   uses: ncipollo/release-action@v1
+    #   with:
+    #     token: ${{ secrets.GITHUB_TOKEN }}
+    #     prerelease: true
+    #     artifacts: web-config-client.zip
         
-    - name: Update frv tag
+    - name: Update dev tag
       if: env.isNightly == 'true'
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: dev
+        commit : dev
         allowUpdates: true
         replacesArtifacts: true
         prerelease: true
