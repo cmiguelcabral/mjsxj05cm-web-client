@@ -9,14 +9,13 @@ on:
 
 env:
   isNightly: ${{ contains(github.ref, 'dev') }}
-  isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, '-rc') }}
-  isFinalRelease: ${{ contains(github.ref, 'tags') && contains(github.ref, '-release') }}
+  isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, 'rc-') }}
+  isFinalRelease: ${{ contains(github.ref, 'tags') && contains(github.ref, 'release-') }}
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-18.04
-
     steps:
     - name: Setup Node.js 12
       uses: actions/setup-node@v1
@@ -45,12 +44,13 @@ jobs:
       if: env.isNightly == 'true'
       uses: ncipollo/release-action@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag : dev
         allowUpdates: true
-        replacesArtifacts: true
-        prerelease: true
         artifacts: dist/web-config-client.zip
+        commit: dev
+        prerelease: true
+        replacesArtifacts: true
+        tag : dev
+        token: ${{ secrets.GITHUB_TOKEN }}
      
     - name: Update latest-rc tag
       if: env.isReleaseCandidate == 'true'
