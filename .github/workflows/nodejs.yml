@@ -31,48 +31,22 @@ jobs:
     - name: Package Distribution
       run: cd dist && zip -r web-config-client.zip *
 
-    - name: Create Release Candidate
+    - name: Release Candidate
+      uses: marvinpinto/action-automatic-releases@latest
       if: env.isNightly == 'true'
-      id: create_release_candidate
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: latest-rc
-        release_name: latest-rc
-        commitish: dev
+        automatic_release_tag: latest-rc
+        files: dist/web-config-client.zip
         prerelease: true
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        title: latest-rc
 
-    - name: Create Release
+    - name: Release
+      uses: marvinpinto/action-automatic-releases@latest
       if: env.isFinalRelease == 'true'
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: latest
-        release_name: latest
-        commitish: master
+        automatic_release_tag: latest-rc
+        files: dist/web-config-client.zip
         prerelease: false
-
-    - name: Upload Release Asset
-      if: env.isNightly == 'true'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release_candidate.outputs.upload_url }}
-        asset_path: ./dist/web-config-client.zip
-        asset_name: web-config-client
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset
-      if: env.isFinalRelease == 'true'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/web-config-client.zip
-        asset_name: web-config-client
-        asset_content_type: application/zip   
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        title: stable
