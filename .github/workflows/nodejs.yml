@@ -9,8 +9,7 @@ on:
 
 env:
   isNightly: ${{ contains(github.ref, 'dev') }}
-  isReleaseCandidate: ${{ contains(github.ref, 'tags') && contains(github.ref, 'rc-') }}
-  isFinalRelease: ${{ contains(github.ref, 'tags') && contains(github.ref, 'release-') }}
+  isFinalRelease: ${{ contains(github.ref, 'master') }}
 
 jobs:
   build:
@@ -34,48 +33,46 @@ jobs:
     - name: Package Distribution
       run: cd dist && zip -r web-config-client.zip *
 
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: web-config-client
-        path: dist/web-config-client.zip
-
-    - name: Update dev tag
+    - name: Create Release Candidate
       if: env.isNightly == 'true'
-      uses: ncipollo/release-action@v1
+      id: create_release_candidate
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        allowUpdates: true
-        name: dev
+        tag_name: latest-rc
+        release_name: latest-rc
         prerelease: true
-        replacesArtifacts: true
-        tag: dev
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: dist/web-config-client.zip
 
-    - name: Update latest-rc tag
-      if: env.isReleaseCandidate == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: latest-rc
-        allowUpdates: true
-        replacesArtifacts: true
-        prerelease: true
-        artifacts: dist/web-config-client.zip
-
-    # - name: Release (final)
-    #   if: env.isFinalRelease == 'true'
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     artifacts: web-config-client.zip
-        
-    - name: Update latest tag
+    - name: Create Release
       if: env.isFinalRelease == 'true'
-      uses: ncipollo/release-action@v1
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: latest
-        allowUpdates: true
-        replacesArtifacts: true
-        artifacts: dist/web-config-client.zip
+        tag_name: latest
+        release_name: latest
+        prerelease: true
+
+    - name: Upload Release Asset
+      if: env.isNightly == 'true'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release_candidate.outputs.upload_url }}
+        asset_path: ./dist/web-config-client.zip
+        asset_name: web-config-client
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset
+      if: env.isFinalRelease == 'true'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/web-config-client.zip
+        asset_name: web-config-client
+        asset_content_type: application/zip   
