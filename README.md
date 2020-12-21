@@ -1,4 +1,9 @@
-# XiaomiCameraWebClient
+## Build Status
+Latest | Stable
+--- | ---
+![Node.js CI](https://github.com/cmiguelcabral/mjsxj05cm-web-client/workflows/Node.js%20CI/badge.svg?tag=latest-rc) | ![Node.js CI](https://github.com/cmiguelcabral/mjsxj05cm-web-client/workflows/Node.js%20CI/badge.svg?branch=master)
+
+# Mi Camera Web-Client
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
 
@@ -12,7 +17,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+## Build for production
+
+Run `ng build:prod` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 

@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
+  configs:[
+    {
+      name: "SSH/SFTP Server",
+      
+    }
+  ]
+
   constructor() { }
 
   ngOnInit(): void {
